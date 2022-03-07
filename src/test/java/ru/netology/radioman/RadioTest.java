@@ -5,108 +5,125 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RadioTest {
+    Radio radio = new Radio();
+
+    /* Установка количества радиостанций */
+
     @Test
-    void shouldInvalidMaxSetCurrentVolume() {
-        Radio radio = new Radio();
-        // Запомнить текущую громкость
-        int expected = radio.getCurrentVolume();
-        // Установить значение громкости больше максимальной
-        radio.setCurrentVolume(11);
-        // Проверить, что текущая громкость не изменилась
-        assertEquals(expected, radio.getCurrentVolume());
+    void shouldSpecifyStationQuantityPositive() {
+        Radio radio = new Radio(9);
+        radio.setStationsQuantity(1);
+        assertEquals(1, radio.getStationsQuantity());
     }
 
     @Test
-    void shouldInvalidMinSetCurrentVolume() {
-        Radio radio = new Radio();
-        // Запомнить текущую громкость
-        int expected = radio.getCurrentVolume();
-        // Установить значение громкости больше максимальной
-        radio.setCurrentVolume(-1);
-        // Проверить, что текущая громкость не изменилась
-        assertEquals(expected, radio.getCurrentVolume());
+    void shouldSpecifyStationQuantityNegative() {
+        Radio radio = new Radio(9);
+        radio.setStationsQuantity(10);
+        assertEquals(10, radio.getStationsQuantity());
     }
 
     @Test
-    void shouldIncreaseCurrentVolume() {
-        Radio radio = new Radio();
-        // Установить текущую громкость
-        radio.setCurrentVolume(9);
-        // Нажимать кнопку увеличения громкости 2 раза
-        radio.increaseCurrentVolume();
-        radio.increaseCurrentVolume();
-        // Проверить, что громкость равна максимально возможной
-        assertEquals(radio.getMaxVolume(), radio.getCurrentVolume());
+    void shouldSpecifyStationQuantityNegative2() {
+        Radio radio = new Radio(0);
+        radio.setStationsQuantity(-1);
+        assertEquals(0, radio.getStationsQuantity());
+    }
+
+    /* Установка номера радиостанции при количестве радиостанций по умолчанию */
+
+    @Test
+    void shouldSpecifyStationWithDefaultQuantityPositive() {
+        radio.setStation(5);
+        assertEquals(5, radio.getStation());
     }
 
     @Test
-    void shouldDecreaseCurrentVolume() {
-        Radio radio = new Radio();
-        // Установить текущую громкость
-        radio.setCurrentVolume(1);
-        // Нажимать кнопку уменьшения громкости 2 раза
-        radio.decreaseCurrentVolume();
-        radio.decreaseCurrentVolume();
-        // Проверить, что громкость равна минимально возможной
-        assertEquals(radio.getMinVolume(), radio.getCurrentVolume());
+    void shouldSpecifyStationWithDefaultQuantityNegative() {
+        radio.setStation(11);
+        assertEquals(0, radio.getStation());
     }
 
     @Test
-    void shouldSetCurrentStation() {
-        Radio radio = new Radio();
-        int expected = 5;
-        // Установить станцию 5
-        radio.setCurrentStation(expected);
-        // Проверить, что станция 5 теперь текущая
-        assertEquals(expected, radio.getCurrentStation());
+    void shouldSpecifyStationWithDefaultQuantityNegative2() {
+        radio.setStation(-1);
+        assertEquals(0, radio.getStation());
+    }
+
+    /* Установка номера радиостанции при собственном количестве радиостанций */
+
+    @Test
+    void shouldSpecifyStationWithCustomQuantityPositive() {
+        Radio radio = new Radio(120);
+        radio.setStationsQuantity(60);
+        radio.setStation(30);
+        assertEquals(30, radio.getStation());
     }
 
     @Test
-    void shouldInvalidMinSetCurrentStation() {
-        Radio radio = new Radio();
-        int expected = radio.getCurrentStation();
-        // Установить станцию меньше минимальной
-        radio.setCurrentStation(-1);
-        // Проверить, что текущая станция не изменилась
-        assertEquals(expected, radio.getCurrentStation());
+    void shouldSpecifyStationWithCustomQuantityNegative() {
+        Radio radio = new Radio(120);
+        radio.setStationsQuantity(60);
+        radio.setStation(61);
+        assertEquals(0, radio.getStation());
     }
 
     @Test
-    void shouldInvalidMaxSetCurrentStation() {
-        Radio radio = new Radio();
-        int expected = radio.getCurrentStation();
-        // Установить станцию больше максимальной
-        radio.setCurrentStation(10);
-        // Проверить, что текущая станция не изменилась
-        assertEquals(expected, radio.getCurrentStation());
+    void shouldSpecifyStationWithCustomQuantityNegative2() {
+        Radio radio = new Radio(120);
+        radio.setStationsQuantity(60);
+        radio.setStation(-1);
+        assertEquals(0, radio.getStation());
+    }
+
+    /* Переключение радиостанций */
+
+    @Test
+    void shouldSwitchStationUpToRoundDefault() {
+        Radio radio = new Radio("ThroughMax", 9);
+        radio.switchStationUp(); // 9~0
+        radio.switchStationUp(); // 0~1
+        assertEquals(1, radio.getStation());
     }
 
     @Test
-    void shouldNextRadioStation() {
+    void shouldSwitchStationDownToRoundDefault() {
+        Radio radio = new Radio("ThroughMin", 1);
+        radio.switchStationDown(); // 1~0
+        radio.switchStationDown(); // 0~9
+        assertEquals(9, radio.getStation());
+    }
+
+    /* Регулировка громкости */
+
+    @Test
+    void shouldIncreaseVolumeToThreshold() {
         Radio radio = new Radio();
-        // Установить станцию 8
-        radio.setCurrentStation(8);
-        // Нажать 2 раза next
-        radio.nextStation();
-        radio.nextStation();
-        // Ожидаемый результат
-        int expected = 0;
-        // Проверить, что станция 0 теперь текущая
-        assertEquals(expected, radio.getCurrentStation());
+        radio.setVolume(99);
+        radio.increaseVolume(); // 99~100
+        radio.increaseVolume(); // 100~100
+        assertEquals(100, radio.getVolume());
     }
 
     @Test
-    void shouldPrevRadioStation() {
+    void shouldDecreaseVolumeToThreshold() {
         Radio radio = new Radio();
-        // Установить станцию 1
-        radio.setCurrentStation(1);
-        // Нажать 2 раза prev
-        radio.prevStation();
-        radio.prevStation();
-        // Ожидаемый результат
-        int expected = 9;
-        // Проверить, что станция 9 теперь текущая
-        assertEquals(expected, radio.getCurrentStation());
+        radio.decreaseVolume(); // 1~0
+        radio.decreaseVolume(); // 0~0
+        assertEquals(0, radio.getVolume());
     }
 
+    /* Тесты для полного покрытия */
+
+    @Test
+    void shouldSetVolumeNegative() {
+        Radio radio = new Radio();
+        assertEquals(0, radio.getVolume());
+    }
+
+    @Test
+    void shouldSetVolumeNegative2() {
+        Radio radio = new Radio();
+        assertEquals(0, radio.getVolume());
+    }
 }
