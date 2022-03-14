@@ -10,6 +10,7 @@ public class Radio {
      * --------------------------------------------------- */
 
     public Radio() {
+        setStationsQuantity(10);
     }
 
 //    public Radio(int volume) {
@@ -21,13 +22,13 @@ public class Radio {
 //        this.volume = volume;
 //    }
 
-    public Radio(int stationsQuantity) {
-        setStationsQuantity(stationsQuantity);
-    }
+//    public Radio(int stationsQuantity) {
+//        setStationsQuantity(stationsQuantity);
+//    }
 
     public Radio(String radioName, int station) {
         this.radioName = radioName;
-        setStation(station);
+        setStationsQuantity(station);
     }
 
     /* Установка параметров
@@ -39,7 +40,7 @@ public class Radio {
         }
         this.stationsQuantity = stationsQuantity;
     }
-
+//------метод позволяющий выбрать любую станцию в произвольном порядке ---
     public void setStation(int station) {
         if (station > stationsQuantity) {
             return;
@@ -64,18 +65,18 @@ public class Radio {
 
     public void switchStationUp() {
         if (station == stationsQuantity) {
-            setStation(0);
+            station = 0;
             return;
         }
-        setStation(++station);
+        station++;
     }
 
     public void switchStationDown() {
         if (station == 0) {
-            setStation(stationsQuantity);
+            station = stationsQuantity;
             return;
         }
-        setStation(--station);
+        station--;
     }
 
     /* Регулировка громкости

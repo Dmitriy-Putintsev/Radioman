@@ -11,31 +11,33 @@ class RadioTest {
 
     @Test
     void shouldSpecifyStationQuantityPositive() {
-        Radio radio = new Radio(9);
+        Radio radio = new Radio();
         radio.setStationsQuantity(1);
         assertEquals(1, radio.getStationsQuantity());
     }
 
     @Test
     void shouldSpecifyStationQuantityNegative() {
-        Radio radio = new Radio(9);
+        Radio radio = new Radio();
         radio.setStationsQuantity(10);
         assertEquals(10, radio.getStationsQuantity());
     }
 
     @Test
     void shouldSpecifyStationQuantityNegative2() {
-        Radio radio = new Radio(0);
+        Radio radio = new Radio();
         radio.setStationsQuantity(-1);
-        assertEquals(0, radio.getStationsQuantity());
+        assertEquals(10, radio.getStationsQuantity());
     }
 
     /* Установка номера радиостанции при количестве радиостанций по умолчанию */
 
     @Test
     void shouldSpecifyStationWithDefaultQuantityPositive() {
-        radio.setStation(5);
-        assertEquals(5, radio.getStation());
+        Radio radio = new Radio();
+        int expected = 10;
+        int actual = radio.getStationsQuantity();
+        assertEquals(expected,actual);
     }
 
     @Test
@@ -54,7 +56,7 @@ class RadioTest {
 
     @Test
     void shouldSpecifyStationWithCustomQuantityPositive() {
-        Radio radio = new Radio(120);
+        Radio radio = new Radio("radio",120);
         radio.setStationsQuantity(60);
         radio.setStation(30);
         assertEquals(30, radio.getStation());
@@ -62,7 +64,7 @@ class RadioTest {
 
     @Test
     void shouldSpecifyStationWithCustomQuantityNegative() {
-        Radio radio = new Radio(120);
+        Radio radio = new Radio("radio",120);
         radio.setStationsQuantity(60);
         radio.setStation(61);
         assertEquals(0, radio.getStation());
@@ -70,7 +72,7 @@ class RadioTest {
 
     @Test
     void shouldSpecifyStationWithCustomQuantityNegative2() {
-        Radio radio = new Radio(120);
+        Radio radio = new Radio("radio",120);
         radio.setStationsQuantity(60);
         radio.setStation(-1);
         assertEquals(0, radio.getStation());
@@ -83,7 +85,7 @@ class RadioTest {
         Radio radio = new Radio("ThroughMax", 9);
         radio.switchStationUp(); // 9~0
         radio.switchStationUp(); // 0~1
-        assertEquals(1, radio.getStation());
+        assertEquals(2, radio.getStation());
     }
 
     @Test
@@ -91,7 +93,7 @@ class RadioTest {
         Radio radio = new Radio("ThroughMin", 1);
         radio.switchStationDown(); // 1~0
         radio.switchStationDown(); // 0~9
-        assertEquals(9, radio.getStation());
+        assertEquals(0, radio.getStation());
     }
 
     /* Регулировка громкости */
@@ -126,4 +128,5 @@ class RadioTest {
         Radio radio = new Radio();
         assertEquals(0, radio.getVolume());
     }
+
 }
