@@ -1,113 +1,84 @@
 package ru.netology.radioman;
 
 public class Radio {
-    private String radioName;
-    private int station;
-    private int stationsQuantity = 9;
+    private int currentStation;
     private int volume;
+    private int volumeMax = 100;
+    private int volumeMin = 0;
+    private int stationsQuantity = 10;
 
-    /* Конструкторы
-     * --------------------------------------------------- */
 
+    //конструкторы по умолчанию и с количеством радиостанций
     public Radio() {
-        setStationsQuantity(10);
     }
 
-//    public Radio(int volume) {
-//        if (volume > 100) {
-//            return;
-//        } else if (volume < 0) {
-//            return;
-//        }
-//        this.volume = volume;
-//    }
 
-//    public Radio(int stationsQuantity) {
-//        setStationsQuantity(stationsQuantity);
-//    }
-
-    public Radio(String radioName, int station) {
-        this.radioName = radioName;
-        setStationsQuantity(station);
-    }
-
-    /* Установка параметров
-     * --------------------------------------------------- */
-
-    public void setStationsQuantity(int stationsQuantity) {
-        if (stationsQuantity < 0) {
-            return;
-        }
+    public Radio(int stationsQuantity) {
         this.stationsQuantity = stationsQuantity;
     }
-//------метод позволяющий выбрать любую станцию в произвольном порядке ---
-    public void setStation(int station) {
-        if (station > stationsQuantity) {
+
+
+    public void setCurrentStation(int currentStation) {
+        if (currentStation > (stationsQuantity - 1)) {
             return;
         }
-        if (station < 0) {
+        if (currentStation < 0) {
             return;
         }
-        this.station = station;
+        this.currentStation = currentStation;
     }
 
-    public void setVolume(int volume) {
-        if (volume > 100) {
+    public int getCurrentStation() {
+        return currentStation;
+    }
+
+    public int getStationsQuantity() {
+        return stationsQuantity;
+    }
+
+    public void increaseStation() {
+
+        if (currentStation == (stationsQuantity - 1)) {
+            setCurrentStation(0);
             return;
-        } else if (volume < 0) {
+        }
+        setCurrentStation(++currentStation);
+
+    }
+
+    public void prevStation() {
+
+        if (currentStation == 0) {
+            setCurrentStation(stationsQuantity - 1);
+            return;
+        }
+        setCurrentStation(--currentStation);
+
+    }
+
+    public int getCurrentVolume() {
+        return volume;
+    }
+
+    public void setCurrentVolume(int volume) {
+        if (volume > volumeMax) {
+            return;
+        }
+        if (volume < volumeMin) {
             return;
         }
         this.volume = volume;
     }
 
-    /* Оперирование станциями
-     * --------------------------------------------------- */
-
-    public void switchStationUp() {
-        if (station == stationsQuantity) {
-            station = 0;
-            return;
-        }
-        station++;
-    }
-
-    public void switchStationDown() {
-        if (station == 0) {
-            station = stationsQuantity;
-            return;
-        }
-        station--;
-    }
-
-    /* Регулировка громкости
-     * --------------------------------------------------- */
-
     public void increaseVolume() {
-        if (volume == 100) {
-            return;
+        if (volume < volumeMax) {
+            volume = volume + 1;
         }
-        setVolume(++volume);
     }
 
-    public void decreaseVolume() {
-        if (volume == 0) {
-            return;
+    public void prevVolume() {
+        if (volume > 0) {
+            volume = volume - 1;
         }
-        setVolume(--volume);
-    }
-
-    /* Getters
-     * --------------------------------------------------- */
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public int getStation() {
-        return station;
-    }
-
-    public int getStationsQuantity() {
-        return stationsQuantity;
     }
 }
